@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -7,8 +8,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 app.use(cors());
 app.use(express.json());
 
-const uri =
-  "mongodb+srv://dbUser:randomPassword@cluster0.2rn0ff6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGODB_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -25,8 +25,8 @@ async function run() {
     const database = client.db("eventify_db");
     const events = database.collection("events");
 
-    // send req
-    app.post("/createGroup", async (req, res) => {
+    // create event
+    app.post("/create-event", async (req, res) => {
       console.log(req.body);
       const result = await events.insertOne(req.body);
       res.send(result);
