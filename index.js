@@ -25,9 +25,22 @@ async function run() {
     const database = client.db("eventify_db");
     const events = database.collection("events");
 
+    // get event list
+    app.get("/all-events", async (req, res) => {
+      const result = await events.find().toArray();
+      res.send(result);
+    });
+
+
+    // get event by email
+    app.get("/event/:email", async(req, res)=>{
+      const email = req.params.email
+      // console.log(email)
+    })
+
     // create event
     app.post("/create-event", async (req, res) => {
-      console.log(req.body);
+      // console.log(req.body);
       const result = await events.insertOne(req.body);
       res.send(result);
     });
